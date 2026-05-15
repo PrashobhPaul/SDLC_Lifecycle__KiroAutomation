@@ -1,0 +1,22 @@
+{
+  "name": "golden-set-update",
+  "description": "Refresh the golden-run set for a sprint after model or prompt change. Records previous baseline before overwrite.",
+  "category": "manual",
+  "trigger": {
+    "event": "manual.invoke"
+  },
+  "actions": [
+    {
+      "run": "tools/golden-compare.ts --sprint=${sprint} --mode=record-baseline"
+    },
+    {
+      "run": "tools/golden-compare.ts --sprint=${sprint} --mode=run-and-overwrite"
+    }
+  ],
+  "governance": {
+    "pii_class": "redacted",
+    "owners": [
+      "prashobh"
+    ]
+  }
+}

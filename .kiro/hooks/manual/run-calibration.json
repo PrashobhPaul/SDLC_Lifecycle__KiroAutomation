@@ -1,0 +1,23 @@
+{
+  "name": "run-calibration",
+  "description": "Kick off a human-vs-LLM judge calibration job for the current sprint (S2 and S5 by roadmap).",
+  "category": "manual",
+  "trigger": {
+    "event": "manual.invoke"
+  },
+  "actions": [
+    {
+      "run": "tools/calibration-prepare.ts --sprint=${sprint} --n=20"
+    },
+    {
+      "run": "echo 'Calibration prepared at .kiro/validaite/calibration/S${sprint}/. Notify SMEs to score before running calibration-compute.ts.'"
+    }
+  ],
+  "governance": {
+    "pii_class": "redacted",
+    "owners": [
+      "prashobh",
+      "ai-coe"
+    ]
+  }
+}

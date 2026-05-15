@@ -1,0 +1,19 @@
+{
+  "name": "regenerate-dashboards",
+  "description": "Push refreshed Grafana dashboards from .kiro/validaite/dashboards/*.grafana.json.",
+  "category": "manual",
+  "trigger": {
+    "event": "manual.invoke"
+  },
+  "actions": [
+    {
+      "run": "tools/dashboards/sync.ts --target=grafana --dir=.kiro/validaite/dashboards"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "owners": [
+      "operations"
+    ]
+  }
+}

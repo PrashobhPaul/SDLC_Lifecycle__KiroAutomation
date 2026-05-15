@@ -1,0 +1,23 @@
+{
+  "name": "regenerate-validaite-scorecard",
+  "description": "Manually trigger the per-sprint scorecard aggregation. Used by Prashant for self-service runs.",
+  "category": "manual",
+  "trigger": {
+    "event": "manual.invoke"
+  },
+  "actions": [
+    {
+      "run": "tools/validaite-aggregate.ts --sprint=${sprint} --out=.kiro/validaite/scorecards/S${sprint}.json"
+    },
+    {
+      "run": "tools/validaite-aggregate.ts --sprint=${sprint} --explain --out=.kiro/validaite/scorecards/S${sprint}-prashant.md"
+    }
+  ],
+  "governance": {
+    "pii_class": "redacted",
+    "owners": [
+      "prashant",
+      "anyone"
+    ]
+  }
+}
