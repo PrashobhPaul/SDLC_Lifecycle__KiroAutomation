@@ -1,0 +1,17 @@
+{
+  "name": "post-turn-aiq-emit",
+  "description": "Append an AIQ scorecard row to .kiro/validaite/telemetry/aiq.jsonl after every successful agent turn.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.turn.post.success"
+  },
+  "actions": [
+    {
+      "run": "tools/validaite/aiq-emit.ts --agent=${agent} --turn=${turn_id} --feature=${feature_id}"
+    }
+  ],
+  "governance": {
+    "pii_class": "redacted",
+    "agent_visible": "all"
+  }
+}
