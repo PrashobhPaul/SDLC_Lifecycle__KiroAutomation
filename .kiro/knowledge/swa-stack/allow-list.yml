@@ -1,0 +1,42 @@
+# Data scope allow-list for CALM Phase-1
+# Source-of-truth for the pre-turn-allow-list-check hook.
+# Any tool target outside this list triggers refusal at the agent boundary.
+
+confluence:
+  spaces:
+    - CREWOPS
+    - CALM
+    - SWA-AI-COE
+  page_globs:
+    - "**/Crew Rest Violation*"
+    - "**/CALM*"
+    - "**/Phase-1 Roadmap*"
+
+jira:
+  projects:
+    - CREWOPS
+    - CALM
+  issue_types:
+    - Epic
+    - Story
+    - Task
+    - Sub-task
+
+figma:
+  files:
+    - "Crew Rest Violation Alert"
+    - "CALM Demo Boards"
+
+gitlab:
+  groups:
+    - swa/crew-ops
+    - swa/calm
+  default_branch_protect: true
+  push_protection_required: true
+
+# Disallowed (refusal-on-match)
+disallowed:
+  - github.com
+  - public_internet_writes
+  - production_kafka_topics_for_writes
+  - prod_aws_apply
