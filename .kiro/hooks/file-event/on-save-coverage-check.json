@@ -1,0 +1,38 @@
+{
+  "name": "on-save-coverage-check",
+  "description": "After a test run, compute coverage delta and emit AIQ record. Fails the hook if coverage drops below the agent-class threshold.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.spec.ts"
+    ]
+  },
+  "actions": [
+    {
+      "run": "vitest run --coverage --reporter=json --outputFile=.kiro/validaite/telemetry/coverage-${run_id}.json",
+      "fail_on": "coverage_below_threshold"
+    },
+    {
+      "run": "tools/validaite/coverage-aggregate.ts --run=${run_id}"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "test-engineer",
+      "code-reviewer"
+    ]
+  },
+  "thresholds": {
+    "utils": 0.95,
+    "hooks": 0.9,
+    "components": 0.7,
+    "domain": 0.95,
+    "application": 0.9,
+    "adapters": 0.8,
+    "handlers": 0.7
+  }
+}

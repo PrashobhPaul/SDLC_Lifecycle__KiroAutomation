@@ -1,0 +1,30 @@
+{
+  "name": "on-save-tsc-noemit",
+  "description": "Run tsc --noEmit on save for any TS/TSX file. Fail if type errors are introduced.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "**/*.ts",
+      "**/*.tsx"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**"
+    ]
+  },
+  "actions": [
+    {
+      "run": "tsc --noEmit --project tsconfig.json",
+      "fail_on": "non_zero_exit"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "code-reviewer"
+    ]
+  }
+}

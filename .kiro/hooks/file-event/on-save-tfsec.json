@@ -1,0 +1,37 @@
+{
+  "name": "on-save-tfsec",
+  "description": "When Terraform files change, run tfsec/tflint/checkov locally and emit findings to the reviewer telemetry stream.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "infra/**/*.tf",
+      "modules/**/*.tf",
+      "envs/**/*.tf"
+    ]
+  },
+  "actions": [
+    {
+      "run": "tfsec --soft-fail=false --format=json ${dir} > .kiro/validaite/telemetry/tfsec-${run_id}.json",
+      "fail_on": "high_or_critical"
+    },
+    {
+      "run": "tflint --format=json ${dir}",
+      "fail_on": "non_zero_exit"
+    },
+    {
+      "run": "checkov -d ${dir} --output json --soft-fail=false",
+      "fail_on": "high_or_critical"
+    },
+    {
+      "run": "tools/validaite/iac-aggregate.ts --run=${run_id}"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "code-reviewer"
+    ]
+  }
+}

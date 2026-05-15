@@ -1,0 +1,29 @@
+{
+  "name": "on-save-eslint",
+  "description": "Run eslint with --max-warnings=0 on save for any TS/TSX file.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "**/*.ts",
+      "**/*.tsx"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**"
+    ]
+  },
+  "actions": [
+    {
+      "run": "eslint --max-warnings=0 ${file}",
+      "fail_on": "non_zero_exit"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "code-reviewer"
+    ]
+  }
+}

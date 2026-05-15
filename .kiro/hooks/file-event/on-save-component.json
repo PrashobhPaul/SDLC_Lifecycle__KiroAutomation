@@ -1,0 +1,33 @@
+{
+  "name": "on-save-component",
+  "description": "When a React component file is saved, ensure a sibling test exists; if missing, surface a test-engineer reminder (does not block).",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "src/**/*.tsx",
+      "src/**/components/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.test.tsx",
+      "**/*.stories.tsx"
+    ]
+  },
+  "actions": [
+    {
+      "run": "tools/check-sibling-test.ts --file=${file}",
+      "fail_on": "never"
+    },
+    {
+      "emit": "validaite:test-coverage-reminder",
+      "if": "no_sibling_test"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "test-engineer"
+    ]
+  }
+}

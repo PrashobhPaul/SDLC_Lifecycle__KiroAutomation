@@ -1,0 +1,26 @@
+{
+  "name": "on-save-vtl",
+  "description": "When a VTL mapping template is saved, run amplify-appsync-simulator goldens.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "**/resolvers/**/*.vtl",
+      "**/mapping-templates/**/*.vtl"
+    ]
+  },
+  "actions": [
+    {
+      "run": "tools/vtl-golden.ts --file=${file}",
+      "fail_on": "golden_mismatch"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "test-engineer",
+      "code-reviewer"
+    ]
+  }
+}

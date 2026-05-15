@@ -1,0 +1,32 @@
+{
+  "name": "on-save-graphql-schema",
+  "description": "When a .graphql schema file is saved, run graphql-inspector diff against the previous schema and refresh codegen.",
+  "category": "file-event",
+  "trigger": {
+    "event": "file.save",
+    "match": [
+      "**/*.graphql",
+      "**/schema.graphql"
+    ]
+  },
+  "actions": [
+    {
+      "run": "graphql-inspector diff --rule=client --rule=consider-usage HEAD ${file}",
+      "fail_on": "breaking_change_unflagged"
+    },
+    {
+      "run": "graphql-codegen --config codegen.yml",
+      "fail_on": "non_zero_exit"
+    },
+    {
+      "run": "tools/validaite/emit.ts --kind=schema-change --file=${file}"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "agent_visible": [
+      "developer",
+      "code-reviewer"
+    ]
+  }
+}
