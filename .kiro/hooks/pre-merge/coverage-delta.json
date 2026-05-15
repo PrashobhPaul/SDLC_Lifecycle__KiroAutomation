@@ -1,0 +1,22 @@
+{
+  "name": "coverage-delta",
+  "description": "Block merge if total coverage drops by more than 1% relative to base.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/validaite/coverage-delta.ts --base=origin/main --head=HEAD --max-drop=0.01",
+      "fail_on": "coverage_drop_exceeded"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "blocks_merge_on_block": true,
+    "owners": [
+      "test-engineer",
+      "code-reviewer"
+    ]
+  }
+}

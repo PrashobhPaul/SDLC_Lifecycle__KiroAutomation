@@ -1,0 +1,21 @@
+{
+  "name": "graphql-breaking-change",
+  "description": "Block merge if a GraphQL schema change is breaking and is not flagged with an explicit version bump + deprecation plan.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "graphql-inspector diff --rule=consider-usage origin/main HEAD",
+      "fail_on": "breaking_change_unflagged"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "blocks_merge_on_block": true,
+    "owners": [
+      "code-reviewer"
+    ]
+  }
+}

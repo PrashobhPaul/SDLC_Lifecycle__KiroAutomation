@@ -1,0 +1,29 @@
+{
+  "name": "security-scan",
+  "description": "Run npm audit, semgrep, and gitleaks on the diff before merge.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "npm audit --audit-level=high",
+      "fail_on": "non_zero_exit"
+    },
+    {
+      "run": "semgrep --config=auto --severity=ERROR --error",
+      "fail_on": "non_zero_exit"
+    },
+    {
+      "run": "gitleaks detect --no-git --redact --exit-code=1",
+      "fail_on": "non_zero_exit"
+    }
+  ],
+  "governance": {
+    "pii_class": "guarded",
+    "blocks_merge_on_block": true,
+    "owners": [
+      "code-reviewer"
+    ]
+  }
+}

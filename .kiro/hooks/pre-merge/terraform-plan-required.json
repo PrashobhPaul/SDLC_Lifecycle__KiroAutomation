@@ -1,0 +1,26 @@
+{
+  "name": "terraform-plan-required",
+  "description": "Require an attached terraform plan output for any IaC change. Reject merge if missing.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/iac/check-plan-attached.ts --pr=${pr_id}",
+      "fail_on": "no_plan_attached"
+    },
+    {
+      "run": "tools/iac/check-plan-no-destroy.ts --pr=${pr_id}",
+      "fail_on": "destroy_without_g4_approval"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "blocks_merge_on_block": true,
+    "owners": [
+      "code-reviewer",
+      "developer"
+    ]
+  }
+}

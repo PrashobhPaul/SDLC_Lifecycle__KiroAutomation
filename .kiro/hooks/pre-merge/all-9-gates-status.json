@@ -1,0 +1,20 @@
+{
+  "name": "all-9-gates-status",
+  "description": "Render the status of all 9 HITL gates for the PR (approved / waived / not-applicable / blocked) and attach to the merge ticket.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/governance/render-gates.ts --feature=${feature_id} --pr=${pr_id} --out=.kiro/validaite/scorecards/gates-${pr_id}.md"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "blocks_merge_on_block": false,
+    "owners": [
+      "code-reviewer"
+    ]
+  }
+}

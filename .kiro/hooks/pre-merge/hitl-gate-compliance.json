@@ -1,0 +1,21 @@
+{
+  "name": "hitl-gate-compliance",
+  "description": "Verify every applicable HITL gate (G1–G9) has a recorded 'approve' decision in the audit log before merge.",
+  "category": "pre-merge",
+  "trigger": {
+    "event": "merge.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/governance/hitl-compliance.ts --feature=${feature_id} --pr=${pr_id}",
+      "fail_on": "missing_gate_decision"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "blocks_merge_on_block": true,
+    "owners": [
+      "all-five-agents"
+    ]
+  }
+}
