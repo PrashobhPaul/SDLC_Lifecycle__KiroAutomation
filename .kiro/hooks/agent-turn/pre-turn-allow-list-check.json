@@ -1,0 +1,19 @@
+{
+  "name": "pre-turn-allow-list-check",
+  "description": "Verify any tool call destination is in the data-scope allow-list (Confluence/Jira/Figma/GitLab) before the call is dispatched.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.tool.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/guardrail/scope-check.ts --tool=${tool} --target=${target}",
+      "fail_on": "out_of_scope"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "halts_tool_on_block": true,
+    "agent_visible": "all"
+  }
+}

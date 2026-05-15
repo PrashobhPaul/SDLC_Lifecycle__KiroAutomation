@@ -1,0 +1,19 @@
+{
+  "name": "pre-turn-question-back-state",
+  "description": "If a Question-Back is open and unanswered (marker != 'answered'), refuse to proceed and re-emit the open questions.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.turn.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/guardrail/question-back-state.ts --agent=${agent} --feature=${feature_id}",
+      "fail_on": "open_question_back"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "halts_turn_on_block": true,
+    "agent_visible": "all"
+  }
+}

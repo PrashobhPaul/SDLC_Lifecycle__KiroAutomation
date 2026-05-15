@@ -1,0 +1,19 @@
+{
+  "name": "pre-turn-budget-check",
+  "description": "Verify token-budget for the agent and steering files before the turn proceeds. Refuse and ask the orchestrator to summarise if budget exceeded.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.turn.pre"
+  },
+  "actions": [
+    {
+      "run": "tools/guardrail/budget-check.ts --agent=${agent}",
+      "fail_on": "budget_exceeded"
+    }
+  ],
+  "governance": {
+    "pii_class": "none",
+    "halts_turn_on_block": true,
+    "agent_visible": "all"
+  }
+}

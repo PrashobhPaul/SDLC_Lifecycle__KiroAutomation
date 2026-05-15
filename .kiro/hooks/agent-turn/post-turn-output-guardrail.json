@@ -1,0 +1,19 @@
+{
+  "name": "post-turn-output-guardrail",
+  "description": "Run output-sanity guardrail (envelope/schema/AIQ contract, PII redaction, secret scan) after every agent turn. Refuse-to-emit on failure.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.turn.post"
+  },
+  "actions": [
+    {
+      "run": "tools/guardrail/output-check.ts --agent=${agent} --turn=${turn_id}",
+      "fail_on": "guardrail_block"
+    }
+  ],
+  "governance": {
+    "pii_class": "guarded",
+    "blocks_emission_on_block": true,
+    "agent_visible": "all"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "post-turn-handoff-validate",
+  "description": "When an agent emits a handoff envelope, validate it against handoff-envelope.schema.json. Reject downstream activation if invalid.",
+  "category": "agent-turn",
+  "trigger": {
+    "event": "agent.handoff.emit"
+  },
+  "actions": [
+    {
+      "run": "tools/handoff/validate.ts --envelope=${envelope_path}",
+      "fail_on": "schema_invalid"
+    }
+  ],
+  "governance": {
+    "pii_class": "redacted",
+    "blocks_handoff_on_block": true,
+    "agent_visible": [
+      "feature-builder",
+      "developer",
+      "test-engineer",
+      "code-reviewer",
+      "documentation"
+    ]
+  }
+}
