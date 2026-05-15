@@ -1,0 +1,41 @@
+{
+  "sprint": 2,
+  "n_artefacts": 20,
+  "stratification": {
+    "by_agent": {
+      "feature-builder": 4,
+      "developer": 6,
+      "test-engineer": 4,
+      "code-reviewer": 4,
+      "documentation": 2
+    },
+    "by_layer": {
+      "react-mfe": 4,
+      "graphql-schema": 3,
+      "node-resolver": 6,
+      "vtl-resolver": 3,
+      "terraform-iac": 4
+    }
+  },
+  "rubric": {
+    "axes": [
+      "pattern_adherence",
+      "correctness",
+      "completeness",
+      "security",
+      "maintainability",
+      "handshake_fidelity"
+    ],
+    "scale": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "acceptance": {
+    "min_pearson_correlation": 0.7
+  },
+  "instructions_for_smes": "Score independently. Do not view LLM-judge scores until your scoring is complete. Disagreements are valuable signal."
+}
