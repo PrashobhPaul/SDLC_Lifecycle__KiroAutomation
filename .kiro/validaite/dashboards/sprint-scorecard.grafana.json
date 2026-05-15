@@ -1,0 +1,129 @@
+{
+  "title": "CALM \u2014 Sprint Scorecard",
+  "uid": "calm-sprint-scorecard",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "AIQ overall (current sprint)",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_aiq_overall)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Compilation pass rate",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_compilation_pass_rate)"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Pattern adherence",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_pattern_adherence)"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Hallucination rate",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_hallucination_rate)"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Handshake fidelity",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_handshake_fidelity)"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Coverage overall",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_coverage_overall)"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Reviewer FP rate",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_reviewer_fp_rate)"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "stat",
+      "title": "Token reduction vs v1",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_token_reduction)"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "stat",
+      "title": "First-pass acceptance",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_first_pass_acceptance)"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "stat",
+      "title": "Human-judge correlation",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_human_judge_correlation)"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "HITL compliance",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "avg(calm_hitl_compliance)"
+        }
+      ]
+    }
+  ]
+}

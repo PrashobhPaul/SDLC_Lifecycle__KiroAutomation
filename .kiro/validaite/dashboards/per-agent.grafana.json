@@ -1,0 +1,82 @@
+{
+  "title": "CALM \u2014 Per-Agent",
+  "uid": "calm-per-agent",
+  "schemaVersion": 39,
+  "version": 1,
+  "templating": {
+    "list": [
+      {
+        "name": "agent",
+        "type": "custom",
+        "options": [
+          {
+            "text": "feature-builder",
+            "value": "feature-builder"
+          },
+          {
+            "text": "developer",
+            "value": "developer"
+          },
+          {
+            "text": "test-engineer",
+            "value": "test-engineer"
+          },
+          {
+            "text": "code-reviewer",
+            "value": "code-reviewer"
+          },
+          {
+            "text": "documentation",
+            "value": "documentation"
+          }
+        ]
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "graph",
+      "title": "Tokens per turn",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_tokens_per_turn{agent=\"$agent\"}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "graph",
+      "title": "Latency per turn",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_latency_ms{agent=\"$agent\"}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "graph",
+      "title": "Self-correction attempts",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_self_correction_attempts{agent=\"$agent\"}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "graph",
+      "title": "Refusals & guardrail blocks",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_guardrail_blocks{agent=\"$agent\"}"
+        }
+      ]
+    }
+  ]
+}
