@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qualizeal.ai/kiro-calm/aiq-scorecard.schema.json",
+  "title": "AIQ Scorecard Record (per agent turn)",
+  "description": "Phase-1 commitment: AIQ + ValidAIte scorecard per agent per sprint. One JSONL line per agent turn under .kiro/validaite/telemetry/. Aggregated to scorecards under .kiro/validaite/scorecards/.",
+  "type": "object",
+  "required": [
+    "record_version",
+    "ts",
+    "agent",
+    "agent_run_id",
+    "trace_id",
+    "feature_id",
+    "phase",
+    "tokens",
+    "latency_ms",
+    "hitl",
+    "guardrails",
+    "verification",
+    "quality_signals"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "record_version": { "const": "1.0.0" },
+    "ts": { "type": "string", "format": "date-time" },
+    "agent": {
+      "type": "string",
+      "enum": ["feature-builder", "developer", "test-engineer", "code-reviewer", "documentation"]
+    },
+    "agent_run_id": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "span_id": { "type": "string" },
+    "feature_id": { "type": "string" },
+    "sprint": { "type": "string", "pattern": "^S[1-6]$" },
+    "phase": {
+      "type": "string",
+      "enum": ["intake", "clarify", "plan", "execute", "verify", "handoff", "review", "merge", "doc"]
+    },
+    "model": { "type": "string" },
+    "tokens": {
+      "type": "object",
+      "required": ["in", "out"],
+      "properties": {
+        "in": { "type": "integer", "minimum": 0 },
+        "out": { "type": "integer", "minimum": 0 },
+        "cumulative_session": { "type": "integer" },
+        "budget_remaining": { "type": "integer" }
+      }
+    },
+    "latency_ms": { "type": "integer", "minimum": 0 },
+    "hitl": {
+      "type": "object",
+      "required": ["gate_fired", "outcome"],
+      "properties": {
+        "gate_fired": { "type": "string" },
+        "outcome": { "type": "string", "enum": ["approved", "rejected", "modified", "n/a"] },
+        "approver": { "type": "string" },
+        "approval_ms": { "type": "integer" }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "required": ["input_pass", "output_pass"],
+      "properties": {
+        "input_pass": { "type": "boolean" },
+        "output_pass": { "type": "boolean" },
+        "pii_redactions": { "type": "integer", "minimum": 0 },
+        "injection_blocks": { "type": "integer", "minimum": 0 },
+        "schema_validation_errors": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "Build/lint/test/security results when this turn produced verifiable artifacts.",
+      "properties": {
+        "tsc_no_emit": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "eslint": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "graphql_codegen": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "terraform_validate": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "terraform_plan_diff": { "type": "string" },
+        "tfsec": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "tflint": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "semgrep": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "vtl_simulator": { "type": "string", "enum": ["pass", "fail", "n/a"] },
+        "tests_passed": { "type": "integer", "minimum": 0 },
+        "tests_failed": { "type": "integer", "minimum": 0 },
+        "coverage_pct": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "quality_signals": {
+      "type": "object",
+      "description": "Phase-1 target metrics, captured per turn so sprint scorecard can aggregate.",
+      "properties": {
+        "compilation_pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "pattern_adherence_1_5": { "type": "number", "minimum": 1, "maximum": 5 },
+        "hallucination_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "handshake_fidelity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "first_pass_acceptance": { "type": "boolean" },
+        "modification_density_per_100": { "type": "number", "minimum": 0 },
+        "reviewer_false_positive_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "human_judge_correlation": { "type": "number", "minimum": -1, "maximum": 1 },
+        "token_reduction_vs_v1_pct": { "type": "number" }
+      }
+    },
+    "async": {
+      "type": "object",
+      "description": "Populated when the agent turn ran via the async orchestrator.",
+      "properties": {
+        "queue": { "type": "string" },
+        "attempts": { "type": "integer" },
+        "fallback_used": { "type": "boolean" },
+        "dlq_routed": { "type": "boolean" },
+        "idempotency_key": { "type": "string" }
+      }
+    },
+    "notes": { "type": "string", "maxLength": 2000 }
+  }
+}

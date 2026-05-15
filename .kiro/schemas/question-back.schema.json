@@ -1,1 +1,73 @@
-json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qualizeal.ai/kiro-calm/question-back.schema.json",
+  "title": "Question-Back Model — Clarification File",
+  "description": "Phase-1 commitment: every agent (all 5) can halt with question.md when context is thin and resume when answered. Schema defines question.md and answer.md.",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/Question" },
+    { "$ref": "#/$defs/Answer" }
+  ],
+  "$defs": {
+    "Question": {
+      "type": "object",
+      "required": ["kind", "q_id", "raised_by", "raised_at", "feature_id", "blocking", "items"],
+      "properties": {
+        "kind": { "const": "question" },
+        "q_id": { "type": "string", "pattern": "^q_[a-z0-9]{8}$" },
+        "raised_by": { "type": "string", "enum": ["feature-builder", "developer", "test-engineer", "code-reviewer", "documentation"] },
+        "raised_at": { "type": "string", "format": "date-time" },
+        "feature_id": { "type": "string" },
+        "trace_id": { "type": "string" },
+        "blocking": { "type": "boolean" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "required": ["item_id", "question", "options"],
+            "properties": {
+              "item_id": { "type": "string", "pattern": "^Q[0-9]+$" },
+              "question": { "type": "string", "minLength": 8 },
+              "options": {
+                "type": "array",
+                "minItems": 2,
+                "items": { "type": "string", "maxLength": 200 }
+              },
+              "allow_other": { "type": "boolean", "default": true },
+              "category": {
+                "type": "string",
+                "enum": ["scope", "users-roles", "behavior", "ui-ux", "data-apis", "perf-non-functional", "security", "test-coverage", "infra", "graphql-schema", "vtl-resolver", "iam"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "Answer": {
+      "type": "object",
+      "required": ["kind", "q_id", "answered_by", "answered_at", "answers"],
+      "properties": {
+        "kind": { "const": "answer" },
+        "q_id": { "type": "string" },
+        "answered_by": { "type": "string" },
+        "answered_at": { "type": "string", "format": "date-time" },
+        "marker": { "const": "answered", "description": "File MUST contain this marker for the agent to resume." },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item_id", "selected"],
+            "properties": {
+              "item_id": { "type": "string" },
+              "selected": { "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }] },
+              "other_text": { "type": "string" },
+              "rationale": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

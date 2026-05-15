@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qualizeal.ai/kiro-calm/hitl-gates.json",
+  "title": "Kiro CALM HITL Gate Inventory",
+  "description": "Phase-1 commitment: 9 mandatory HITL gates fire at every decision boundary; HITL audit shows 100% compliance.",
+  "version": "1.0.0",
+  "gates": [
+    {
+      "gate_id": "G1",
+      "name": "scope-approval",
+      "owner_agent": "feature-builder",
+      "trigger": "After NL/ticket parsing and Epic/Story decomposition, before handoff to Developer.",
+      "blocking": true,
+      "evidence_required": ["scope.in_scope", "scope.out_of_scope", "context.acceptance_criteria"],
+      "artifact": ".kiro/handoff/<feature-id>/scope-approval.md"
+    },
+    {
+      "gate_id": "G2",
+      "name": "plan-approval",
+      "owner_agent": "developer",
+      "trigger": "After codebase analysis + clarification, before any code is written.",
+      "blocking": true,
+      "evidence_required": ["files-to-create-modify-table", "implementation-steps", "integration-points", "risks"],
+      "artifact": ".kiro/handoff/<feature-id>/plan-approval.md"
+    },
+    {
+      "gate_id": "G3",
+      "name": "schema-change-approval",
+      "owner_agent": "developer",
+      "trigger": "Any change to GraphQL schema (.graphql) or DynamoDB GSI/key shape.",
+      "blocking": true,
+      "evidence_required": ["schema-diff", "breaking-change-check", "graphql-codegen-output"],
+      "artifact": ".kiro/handoff/<feature-id>/schema-change.md"
+    },
+    {
+      "gate_id": "G4",
+      "name": "iac-change-approval",
+      "owner_agent": "developer",
+      "trigger": "Any Terraform change before apply; requires terraform plan output.",
+      "blocking": true,
+      "evidence_required": ["terraform-plan", "tfsec-report", "iam-diff", "encryption-status"],
+      "artifact": ".kiro/handoff/<feature-id>/iac-change.md"
+    },
+    {
+      "gate_id": "G5",
+      "name": "test-strategy-approval",
+      "owner_agent": "test-engineer",
+      "trigger": "Before generating tests; strategy must be approved.",
+      "blocking": true,
+      "evidence_required": ["pyramid-allocation", "edge-cases", "test-data-factories", "coverage-target"],
+      "artifact": ".kiro/handoff/<feature-id>/test-strategy.md"
+    },
+    {
+      "gate_id": "G6",
+      "name": "review-blocker-override",
+      "owner_agent": "code-reviewer",
+      "trigger": "When a reviewer finding tagged 'blocker' is overridden.",
+      "blocking": true,
+      "evidence_required": ["finding-id", "override-rationale", "approver", "expiry"],
+      "artifact": ".kiro/handoff/<feature-id>/blocker-override.md"
+    },
+    {
+      "gate_id": "G7",
+      "name": "self-correction-approval",
+      "owner_agent": "developer",
+      "trigger": "Mechanical fixes (missing imports, type mismatches) after build verification fails.",
+      "blocking": true,
+      "evidence_required": ["proposed-diff", "verification-output-before", "verification-output-after"],
+      "artifact": ".kiro/handoff/<feature-id>/self-correction.md"
+    },
+    {
+      "gate_id": "G8",
+      "name": "doc-stale-decision",
+      "owner_agent": "documentation",
+      "trigger": "Stale-doc detection flags a doc that no longer matches code.",
+      "blocking": false,
+      "evidence_required": ["doc-path", "drift-detected", "proposed-update"],
+      "artifact": ".kiro/handoff/<feature-id>/doc-stale.md"
+    },
+    {
+      "gate_id": "G9",
+      "name": "pre-merge-approval",
+      "owner_agent": "code-reviewer",
+      "trigger": "Final automated gate before MR merge to feature branch.",
+      "blocking": true,
+      "evidence_required": ["all-gates-status", "ci-status", "coverage-delta", "security-scan"],
+      "artifact": ".kiro/handoff/<feature-id>/pre-merge.md"
+    }
+  ],
+  "compliance_audit": {
+    "metric": "hitl_gate_compliance_pct",
+    "target": 100,
+    "measurement": "fired_gates / required_gates per pilot run",
+    "reporting": ".kiro/validaite/scorecards/hitl-audit-<sprint>.json"
+  }
+}
