@@ -1,0 +1,35 @@
+# PII allow-list — fields permitted in CALM context with redaction class
+# Source for the redactor (tools/redactor.ts) and the I/O sanity guardrail.
+
+allowed_fields:
+  - field: employee_id
+    redaction_class: high
+    rule: hash_sha256_first_8
+    contexts: [logs, aiq_records, handoff_envelopes]
+
+  - field: crew_role_code
+    redaction_class: low
+    rule: passthrough
+    contexts: [logs, aiq_records, handoff_envelopes]
+
+  - field: base_airport
+    redaction_class: low
+    rule: passthrough
+    contexts: [logs, aiq_records, handoff_envelopes]
+
+  - field: pairing_id
+    redaction_class: low
+    rule: passthrough
+    contexts: [logs, aiq_records, handoff_envelopes]
+
+forbidden_fields:
+  - employee_full_name
+  - employee_dob
+  - employee_ssn
+  - employee_phone
+  - employee_email_personal
+  - fmla_diagnosis_text
+  - medical_certification_text
+
+# Behaviour on forbidden-field match: refuse-and-halt at output guardrail.
+on_forbidden_match: refuse
