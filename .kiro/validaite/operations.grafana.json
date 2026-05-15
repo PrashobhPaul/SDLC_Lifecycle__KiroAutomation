@@ -1,0 +1,52 @@
+{
+  "title": "CALM \u2014 Operations",
+  "uid": "calm-operations",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "graph",
+      "title": "Queue depth (q.handoff)",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_queue_depth{queue=\"q.handoff\"}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "graph",
+      "title": "DLQ depth",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "calm_dlq_depth"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "graph",
+      "title": "Retry rate",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(calm_retries_total[5m])"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "graph",
+      "title": "Fallback engagements",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(calm_fallback_engagements_total[5m])"
+        }
+      ]
+    }
+  ]
+}
